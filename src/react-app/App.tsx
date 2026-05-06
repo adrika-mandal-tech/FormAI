@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import HomePage from "@/react-app/pages/Home";
 import FormBuilder from "@/react-app/pages/FormBuilder";
 import PublicForm from "@/react-app/pages/PublicForm";
