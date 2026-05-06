@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Created Forms - FormAI" />
+    <meta property="og:description" content="View all your AI-generated forms in one place" />
+    <title>Created Forms - FormAI</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e 0%, #ff6b9d 25%, #c9184a 50%, #ff69b4 75%, #ff8cc8 100%);
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: white;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 30px 0;
+      }
+      
+      .header h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #00ff88, #ff00ff, #00ccff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+        margin-bottom: 10px;
+        text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+      }
+      
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        margin-bottom: 20px;
+      }
+      
+      .forms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+      }
+      
+      .form-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .form-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+        z-index: -1;
+      }
+      
+      .form-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        border-color: rgba(0, 255, 255, 0.4);
+      }
+      
+      .form-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #00ff88;
+      }
+      
+      .form-description {
+        font-size: 1rem;
+        opacity: 0.7;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+      
+      .form-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        opacity: 0.6;
+      }
+      
+      .form-fields-count {
+        background: linear-gradient(45deg, #ff00ff, #00ccff);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+      }
+      
+      .form-date {
+        color: #ff8cc8;
+      }
+      
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        border: 2px dashed rgba(255, 255, 255, 0.2);
+        margin: 40px 0;
+      }
+      
+      .empty-state h2 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        opacity: 0.8;
+      }
+      
+      .empty-state p {
+        font-size: 1.1rem;
+        opacity: 0.6;
+        margin-bottom: 20px;
+      }
+      
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(45deg, #00ff88, #ff00ff);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+      
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 255, 136, 0.4);
+      }
+      
+      .loading {
+        text-align: center;
+        padding: 40px;
+        font-size: 1.2rem;
+        opacity: 0.7;
+      }
+      
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-top: 4px solid #00ff88;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Theme toggle */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .theme-toggle:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+      }
+      
+      /* Dark mode */
+      body.dark {
+        background: linear-gradient(135deg, #2d1b69 0%, #0f0e17 25%, #1a1a2e 50%, #16213e 75%, #0f0f23 100%);
+      }
+      
+      body.dark .form-card {
+        background: rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      body.dark .form-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 255, 255, 0.1);
+      }
+      
+      body.dark .empty-state {
+        background: rgba(0, 0, 0, 0.1);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span id="theme-icon">🌙</span>
+    </div>
+    
+    <div class="container">
+      <header class="header">
+        <h1>✨ Created Forms</h1>
+        <p>All your AI-generated forms in one beautiful place</p>
+      </header>
+      
+      <div id="forms-container" class="forms-grid">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Loading your magical forms...</p>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      let isDark = localStorage.getItem('theme') === 'dark';
+      
+      function setTheme(dark) {
+        if (dark) {
+          document.body.classList.add('dark');
+          document.getElementById('theme-icon').textContent = '☀️';
+        } else {
+          document.body.classList.remove('dark');
+          document.getElementById('theme-icon').textContent = '🌙';
+        }
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+        isDark = dark;
+      }
+      
+      function toggleTheme() {
+        setTheme(!isDark);
+      }
+      
+      // Initialize theme
+      setTheme(isDark);
+      
+      // Fetch forms from API
+      async function fetchForms() {
+        try {
+          const response = await fetch('/api/forms');
+          if (!response.ok) {
+            throw new Error('Failed to fetch forms');
+          }
+          
+          const forms = await response.json();
+          displayForms(forms);
+        } catch (error) {
+          console.error('Error fetching forms:', error);
+          document.getElementById('forms-container').innerHTML = `
+            <div class="empty-state">
+              <h2>❌ Error Loading Forms</h2>
+              <p>Unable to load your forms. Please refresh the page.</p>
+              <button class="btn" onclick="location.reload()">Refresh Page</button>
+            </div>
+          `;
+        }
+      }
+      
+      function displayForms(forms) {
+        const container = document.getElementById('forms-container');
+        
+        if (!forms || forms.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <h2>📝 No Forms Created Yet</h2>
+              <p>Start creating magical forms with AI to see them here!</p>
+              <a href="/builder" class="btn">Create Your First Form</a>
+            </div>
+          `;
+          return;
+        }
+        
+        const formsHtml = forms.map(form => `
+          <div class="form-card" onclick="window.open('/form/${form.id}', '_blank')">
+            <div class="form-title">${form.title}</div>
+            ${form.description ? `<div class="form-description">${form.description}</div>` : ''}
+            <div class="form-meta">
+              <span class="form-fields-count">${form.fields ? form.fields.length : 0} fields</span>
+              <span class="form-date">${new Date(form.created_at).toLocaleDateString()}</span>
+            </div>
+          </div>
+        `).join('');
+        
+        container.innerHTML = formsHtml;
+      }
+      
+      // Load forms when page loads
+      fetchForms();
+    </script>
+  </body>
+</html>
