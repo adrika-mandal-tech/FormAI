@@ -33,7 +33,8 @@ Built using **React**, **TypeScript**, **Hono**, and **Cloudflare Workers**, For
 * Lucide React
 
 ### Backend
-
+* Javascript
+* Node.js
 * Hono
 * Cloudflare Workers
 
@@ -44,7 +45,7 @@ Built using **React**, **TypeScript**, **Hono**, and **Cloudflare Workers**, For
 
 ### AI
 
-* Google Gemini AI
+* Google Gemini AI API Key
 * @google/genai SDK
 
 ### Validation
