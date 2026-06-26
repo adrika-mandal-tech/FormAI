@@ -58,7 +58,7 @@ Guidelines:
 - **Description**: Write a warm, inviting description for the form header.`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-flash-latest",
+      model: "gemini-3.5-flash",
       contents: [{ role: "user", parts: [{ text: prompt }] }],
       config: {
         systemInstruction: systemPrompt,

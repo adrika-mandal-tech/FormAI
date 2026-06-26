@@ -90,7 +90,8 @@ export default function FormBuilder() {
         body: JSON.stringify({ prompt: aiPrompt })
       });
 
-      const data = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data = (await response.json()) as any;
 
       if (!response.ok) {
         const errorMessage = data.error || "Failed to generate form";
@@ -138,7 +139,8 @@ export default function FormBuilder() {
         throw new Error("Failed to save form");
       }
 
-      const data = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const data = (await response.json()) as any;
       window.open(`/form/${data.id}`, '_blank');
     } catch (error) {
       console.error("Error saving form:", error);

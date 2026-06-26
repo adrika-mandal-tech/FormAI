@@ -42,7 +42,7 @@ export default function AllResponses() {
       if (!formsResponse.ok) {
         throw new Error('Failed to fetch forms');
       }
-      const formsData = await formsResponse.json();
+      const formsData = (await formsResponse.json()) as Form[];
       setForms(formsData);
 
       // Fetch responses for each form
@@ -51,7 +51,7 @@ export default function AllResponses() {
         try {
           const responseRes = await fetch(`/api/forms/${form.id}/responses`);
           if (responseRes.ok) {
-            const formResponses = await responseRes.json();
+            const formResponses = (await responseRes.json()) as Response[];
             responsesData[form.id] = formResponses;
           }
         } catch (err) {

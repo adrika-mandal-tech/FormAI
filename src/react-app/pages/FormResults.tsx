@@ -32,7 +32,7 @@ export default function FormResults() {
         ]);
 
         setForm(f);
-        setResponses(r || []);
+        setResponses((r as FormResponse[]) || []);
       } catch (e) {
         setError("Failed to load results");
       } finally {
