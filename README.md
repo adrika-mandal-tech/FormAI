@@ -4,6 +4,8 @@ An AI-powered form builder that generates dynamic forms from natural language pr
 
 Built using **React**, **TypeScript**, **Hono**, and **Cloudflare Workers**, FormAI enables users to create, manage, share, and analyze forms with the help of Google's Gemini AI.
 
+Video Simulation: https://vimeo.com/1204814214?share=copy&fl=sv&fe=ci
+
 ---
 
 ## ✨ Features
